@@ -34,14 +34,19 @@ export default {
   	getuser(){
 			
 			this.$http({
-				method: 'get',
+				method: 'post',
 				url: '/api/login',
-				data: this.userInfo
+				data: {
+					 username : this.userInfo.username,
+					 passworld : this.userInfo.passworld
+				}
 			})
 			.then((userInfo)=>{
-				//console.log(userInfo.data)
 				if(this.userInfo.username == userInfo.data.username & this.userInfo.passworld == userInfo.data.passworld){
-           this.$router.push('/table');
+
+					 localStorage['userInfo']=JSON.stringify(userInfo);  // 储存用户信息
+					 
+					 this.$router.push('/admin/table');  // 跳转
 				}else{
 					JQ(function(){
 						alert('账号或密码错误！')

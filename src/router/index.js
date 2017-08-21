@@ -5,6 +5,7 @@ import Login from '@/components/login'
 import Table from '@/components/table'
 import Form from '@/components/form'
 import List from '@/components/list'
+import Reset from '@/components/reset'
 
 
 Vue.use(Router)
@@ -13,32 +14,36 @@ export default new Router({
 	mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/admin',
       name: 'Layut',
       component: Layut,
       children:[
         {
-		      path: '/table',
+		      path: '/admin/table',
 		      name: 'table',
 		      component: Table
 		    },
 		    {
-		      path: '/form',
+		      path: '/admin/form',
 		      name: 'form',
 		      component: Form
 		    },
 		    {
-		      path: '/list',
+		      path: '/admin/list',
 		      name: 'list',
 		      component: List
 		    }
       ]
     },
     {
+      path: '/',
+      name: 'reset',
+      component: Reset
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login
     }
-    
   ]
 })

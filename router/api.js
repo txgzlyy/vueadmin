@@ -3,18 +3,29 @@ const router = express.Router()
 
 let User = require('../models/user')
 
-let userInfo = {
-    username: 'admin',
-    passworld: 123456
-}
+let userInfos;
 
-router.get('/login', (req,res) => {
-    console.log(req)
-    // User.findOne({
-    //    // username :
-    // })
+router.post('/login', (req,res) => {
+    //console.log(req.body)        // { username: 'admin', passworld: 123456 }
+    User.findOne({
+        username : req.body.username,
+        passworld : req.body.passworld
+    }).then((userInfo)=>{
+        if(userInfo){
+            userInfos = userInfo
+            res.json(userInfos)
+            return;
+        }  
+        let user = new User({
+            username : req.body.username,
+            passworld : req.body.passworld
+        })
+        return user.save()
+    })
+})
 
-    res.json(userInfo)
+router.post('/admin', (req,res) => {
+    res.json(userInfos)
 })
 
 module.exports = router
