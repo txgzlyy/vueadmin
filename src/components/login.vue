@@ -1,7 +1,7 @@
 <template>
   <div class="login">
   	<div class="main">
-  		<el-form  ref="ruleForm2" class="demo-ruleForm">
+  		<el-form  ref="ruleForm2" class="demo-ruleForm" v-show="isLogin">
   			<h3 class="title">系统登录</h3>
 			  <el-form-item prop="username">
 			    <el-input type="text" v-model="userInfo.username" auto-complete="off" ></el-input>
@@ -10,8 +10,25 @@
 			    <el-input type="password" v-model="userInfo.passworld" auto-complete="off"></el-input>
 			  </el-form-item>
 			  <el-form-item>
-			    <el-button type="primary" @click="getuser">提交</el-button>
-			    <el-button @click="reset">重置</el-button>
+			    <el-button type="primary" @click="getuser">登录</el-button>
+			    <el-button @click="reset">注册</el-button>
+			  </el-form-item>
+			</el-form>
+
+			<el-form  ref="ruleForm2" class="demo-ruleForm" v-show="!isLogin">
+  			<h3 class="title">注册恒博</h3>
+			  <el-form-item prop="username">
+			    <el-input type="text" v-model="resetuserInfo.username" auto-complete="off" ></el-input>
+			  </el-form-item>
+			  <el-form-item prop="pass">
+			    <el-input type="password" v-model="resetuserInfo.passworld" auto-complete="off"></el-input>
+			  </el-form-item>
+				<el-form-item prop="pass">
+			    <el-input type="password" v-model="resetuserInfo.repassworld" auto-complete="off"></el-input>
+			  </el-form-item>
+			  <el-form-item>
+			    <el-button @click="resetgetuser">登录</el-button>
+			    <el-button type="primary" @click="resetzhce">注册</el-button>
 			  </el-form-item>
 			</el-form>
   	</div>
@@ -24,15 +41,20 @@ import JQ from 'jquery'
 export default {
   data(){
   	return{
+			isLogin: true,
 			userInfo:{
 					username: 'admin',
 					passworld: 123456
+			},
+			resetuserInfo:{
+					username: 'admin',
+					passworld: 123456,
+					repassworld: 123456
 			}
   	}
   },
   methods:{
   	getuser(){
-			
 			this.$http({
 				method: 'post',
 				url: '/api/login',
@@ -41,15 +63,14 @@ export default {
 					 passworld : this.userInfo.passworld
 				}
 			})
-			.then((userInfo)=>{
-				if(this.userInfo.username == userInfo.data.username & this.userInfo.passworld == userInfo.data.passworld){
-
-					 localStorage['userInfo']=JSON.stringify(userInfo);  // 储存用户信息
-					 
+			.then((userInfos)=>{
+        let userInfo = userInfos.data
+				if(userInfo.type == 0){
+					 localStorage['userInfo']=JSON.stringify(userInfo.userInfo);  // 储存用户信息
 					 this.$router.push('/admin/table');  // 跳转
 				}else{
 					JQ(function(){
-						alert('账号或密码错误！')
+						alert(userInfo.mesages)
 					})
 					return;
 				}
@@ -57,12 +78,41 @@ export default {
 			.catch((err)=>{
           console.log(err)
 			})
-
-  	//	this.$router.push('/table')
+		},
+		resetzhce(){
+			this.$http({
+				method: 'post',
+				url: '/api/zhce',
+				data: {
+					 username : this.resetuserInfo.username,
+					 passworld : this.resetuserInfo.passworld,
+					 repassworld : this.resetuserInfo.repassworld
+				}
+			})
+			.then((userInfos)=>{
+				let userInfo = userInfos.data
+				if(userInfo.type == 0){
+					localStorage['userInfo']=JSON.stringify({username:this.resetuserInfo.username,passworld : this.resetuserInfo.passworld});  // 储存用户信息
+					JQ(function(){
+						  alert(userInfo.mesages)
+					})
+					 this.$router.push('/admin/user');  // 跳转
+				}else{
+					JQ(function(){
+						alert(userInfo.mesages)
+					})
+					return;
+				}
+			})
+			.catch((err)=>{
+          console.log(err)
+			})
 		},
 		reset(){
-			this.userInfo.username = ''
-			this.userInfo.passworld = ''
+			this.isLogin = false
+		},
+		resetgetuser(){
+			this.isLogin = true
 		}
   }
 }

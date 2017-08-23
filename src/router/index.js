@@ -6,6 +6,7 @@ import Table from '@/components/table'
 import Form from '@/components/form'
 import List from '@/components/list'
 import Reset from '@/components/reset'
+import User from '@/components/user'
 
 
 Vue.use(Router)
@@ -32,13 +33,18 @@ export default new Router({
 		      path: '/admin/list',
 		      name: 'list',
 		      component: List
-		    }
+        },
+        {
+          path: '/admin/user',
+          name: 'user',
+          component: User
+        },
+        {
+          path: '/admin/reset',
+          name: 'reset',
+          component: Reset
+        }
       ]
-    },
-    {
-      path: '/',
-      name: 'reset',
-      component: Reset
     },
     {
       path: '/login',

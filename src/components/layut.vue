@@ -1,7 +1,7 @@
 <template>
   <div>
      <el-row>
-		  <el-col :span="4"><div class="grid-content bg-purple-dark left">
+		  <el-col :span="4"><div class="grid-content bg-purple-dark left" @click="back">
 		  	VUE-ADMIN
 		  </div></el-col>
 		  <el-col :span="18"><div class="grid-content bg-purple-dark"></div></el-col>
@@ -13,7 +13,7 @@
 					  <el-dropdown-menu slot="dropdown" class="userset" >
 					    <el-dropdown-item>我的消息</el-dropdown-item>
 					    <el-dropdown-item>设置</el-dropdown-item>
-					    <el-dropdown-item>退出登录</el-dropdown-item>
+					    <el-dropdown-item  @click="back">退出登录</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</el-col>
@@ -47,7 +47,9 @@
     	</el-col>
     </el-row>
 		<el-row v-show="!isAdmin">
-			<h1>不好意思！这个只能给管理员查看。</h1>
+			<div class="main">
+      		<router-view ></router-view>
+      </div>
 		</el-row>
   </div>
 </template>
@@ -61,6 +63,9 @@ export default {
 			}
 		},
     methods:{
+		  back(){
+         this.$router.push('/')
+			},
 			outLogin(){
 				//this.$router.push('/login')
 				console.log('123')
@@ -70,8 +75,8 @@ export default {
 			if(localStorage.userInfo != ''){
 				//console.log(JSON.parse(localStorage.userInfo).data)
 				let userInfo = {
-					username:JSON.parse(localStorage.userInfo).data.username,
-					isAdmin:JSON.parse(localStorage.userInfo).data.isAdmin
+					username:JSON.parse(localStorage.userInfo).username,
+					isAdmin:JSON.parse(localStorage.userInfo).isAdmin
 				} 
 				this.$store.commit('changeuser',userInfo)
 			}
@@ -79,7 +84,7 @@ export default {
 }
 </script>
 
-<
+
 <style scoped>
 .bg-purple-dark {
     background: #20A0FF;
@@ -122,4 +127,6 @@ export default {
 		margin: 15px 0px 15px 10px;
 		float: right;
 	}
+
+
 </style>

@@ -7,13 +7,13 @@
 		    <el-input v-model="form.name" placeholder="请输入你的姓名"></el-input>
 		  </el-form-item>
 			<el-form-item label="电话">
-		    <el-input v-model="form.name" placeholder="请输入你的电话号码"></el-input>
+		    <el-input v-model="form.tel" placeholder="请输入你的电话号码"></el-input>
 		  </el-form-item>
 			<el-form-item label="微信">
-		    <el-input v-model="form.name" placeholder="请输入你的微信号"></el-input>
+		    <el-input v-model="form.wx" placeholder="请输入你的微信号"></el-input>
 		  </el-form-item>
 			<el-form-item label="QQ">
-		    <el-input v-model="form.name" placeholder="请输入你的QQ号"></el-input>
+		    <el-input v-model="form.qq" placeholder="请输入你的QQ号"></el-input>
 		  </el-form-item>
 			<el-form-item label="性别">
 		    <el-radio-group v-model="form.resource">
@@ -42,8 +42,8 @@
 		    <el-input type="textarea" v-model="form.desc"></el-input>
 		  </el-form-item>
 		  <el-form-item>
-		    <el-button type="primary" @click="onSubmit">注册</el-button>
-		    <el-button @click="onlogin">登录</el-button>
+		    <el-button type="primary" @click="onSubmit">提交</el-button>
+		    <el-button @click="onlogin">重置</el-button>
 		  </el-form-item>
 		</el-form>
   </div>
@@ -54,7 +54,10 @@ export default {
   data() {
       return {
         form: {
-          name: '',
+					name: '',
+					tel: '',
+					wx: '',
+					qq: '',
           region: '',
           date1: '',
           date2: '',
@@ -67,10 +70,11 @@ export default {
     },
     methods: {
       onSubmit() {
-        console.log('submit!');
+				console.log('submit!');
+				this.$router.push('/admin/user')
       },
 			onlogin(){
-				this.$router.push('/login')
+				this.form = {}
 			}
     }
 }
